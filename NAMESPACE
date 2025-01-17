@@ -2,6 +2,7 @@
 
 export(ds.Surv)
 export(ds.cox.zphSLMA)
+export(ds.coxph)
 export(ds.coxph.SLMA)
 export(ds.coxphSLMAassign)
 export(ds.coxphSummary)
