@@ -47,24 +47,20 @@ ds.datadist <- function(data = NULL,
                        adjust_to = NULL,
                        objectname = NULL,
                        datasources = NULL) {
-    
-    # Look for DS connections
+
     if(is.null(datasources)) {
         datasources <- DSI::datashield.connections_find()
     }
-    
-    # Verify that 'data' was set
+
     if(is.null(data)) {
         stop("Please provide the name of a data frame in the 'data' parameter", call.=FALSE)
     }
-    
-    # Verify that 'objectname' was set
+
     if(is.null(objectname)) {
         objectname <- paste0("datadist_", data)
         warning("No objectname provided, using default: ", objectname, call.=FALSE)
     }
-    
-    # Verify adjust_to values are valid
+
     if (!is.null(adjust_to)) {
         if (!is.list(adjust_to)) {
             stop("adjust_to must be a named list", call.=FALSE)
@@ -76,14 +72,11 @@ ds.datadist <- function(data = NULL,
             stop("adjust_to values must be either 'min', 'max', or 'mean'", call.=FALSE)
         }
     }
-    
-    # Call the server side function
+
     calltext <- call("datadistDS", data, adjust_to)
-    
-    # Call assign function
     output <- DSI::datashield.assign(conns = datasources, 
                                    value = calltext, 
                                    symbol = objectname)
-    
+
     return(output)
 } 
