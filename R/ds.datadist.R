@@ -48,35 +48,37 @@ ds.datadist <- function(data = NULL,
                        objectname = NULL,
                        datasources = NULL) {
 
-    if(is.null(datasources)) {
-        datasources <- DSI::datashield.connections_find()
+  if(is.null(datasources)) {
+    datasources <- DSI::datashield.connections_find()
+  }
+
+  if(is.null(data)) {
+    stop("Please provide the name of a data frame in the 'data' parameter", call.=FALSE)
+  }
+
+  if(is.null(objectname)) {
+    objectname <- paste0("datadist_", data)
+    warning("No objectname provided, using default: ", objectname, call.=FALSE)
+  }
+
+  if (!is.null(adjust_to)) {
+    if (!is.list(adjust_to)) {
+      stop("adjust_to must be a named list", call.=FALSE)
     }
-
-    if(is.null(data)) {
-        stop("Please provide the name of a data frame in the 'data' parameter", call.=FALSE)
+    if (!all(names(adjust_to) != "")) {
+      stop("all elements in adjust_to must be named", call.=FALSE)
     }
-
-    if(is.null(objectname)) {
-        objectname <- paste0("datadist_", data)
-        warning("No objectname provided, using default: ", objectname, call.=FALSE)
+    if (!all(adjust_to %in% c("min", "max", "mean"))) {
+      stop("adjust_to values must be either 'min', 'max', or 'mean'", call.=FALSE)
     }
+  }
 
-    if (!is.null(adjust_to)) {
-        if (!is.list(adjust_to)) {
-            stop("adjust_to must be a named list", call.=FALSE)
-        }
-        if (!all(names(adjust_to) != "")) {
-            stop("all elements in adjust_to must be named", call.=FALSE)
-        }
-        if (!all(adjust_to %in% c("min", "max", "mean"))) {
-            stop("adjust_to values must be either 'min', 'max', or 'mean'", call.=FALSE)
-        }
-    }
+  calltext <- call("datadistDS", data, adjust_to)
+  output <- DSI::datashield.assign(
+    conns = datasources,
+    value = calltext, 
+    symbol = objectname
+  )
 
-    calltext <- call("datadistDS", data, adjust_to)
-    output <- DSI::datashield.assign(conns = datasources, 
-                                   value = calltext, 
-                                   symbol = objectname)
-
-    return(output)
+  return(output)
 } 
