@@ -71,4 +71,6 @@ upload_testing_dataset_table(opal, 'TESTING', 'DATASET3', 'TESTING/DATASET3.rda'
 upload_testing_dataset_table(opal, 'LIFESTYLE', 'LIFESTYLE1', 'LIFESTYLE/lifestyle_study1.rda')
 upload_testing_dataset_table(opal, 'LIFESTYLE', 'LIFESTYLE2', 'LIFESTYLE/lifestyle_study2.rda')
 
+upload_testing_dataset_table(opal, 'D', 'D1', 'D/D1.rda')
+
 opal.logout(opal)
