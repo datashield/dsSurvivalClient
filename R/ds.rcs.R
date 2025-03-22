@@ -65,7 +65,7 @@ ds.rcs <- function(x = NULL,
   calltext <- call(
     "rcsDS",
     x,
-    paste0("c(", paste(knots, collapse=","), ")")
+    paste(knots, collapse=",")
   )
 
   output <- DSI::datashield.assign(
