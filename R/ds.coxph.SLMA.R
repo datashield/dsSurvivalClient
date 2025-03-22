@@ -126,6 +126,7 @@ ds.coxph.SLMA <- function(formula = NULL,
    ####################################################################
    formula <- Reduce(paste, deparse(formula))
    formula <- gsub("survival::Surv(", "sssss", formula, fixed = TRUE)
+   formula <- gsub("rms::rcs(", "ggggg", formula, fixed = TRUE)
    formula <- gsub("|", "xxx", formula, fixed = TRUE)
    formula <- gsub("(", "yyy", formula, fixed = TRUE)
    formula <- gsub(")", "zzz", formula, fixed = TRUE)

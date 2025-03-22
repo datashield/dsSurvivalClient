@@ -65,5 +65,5 @@ Server function called: \code{datadistDS}
 
 }
 \author{
-[Your Name], 2024
+Xavier Escribà Montagut, 2025
 }
