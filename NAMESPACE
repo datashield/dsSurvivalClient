@@ -2,6 +2,7 @@
 
 export(ds.Predict)
 export(ds.Surv)
+export(ds.acmPlot)
 export(ds.cox.zphSLMA)
 export(ds.coxph)
 export(ds.coxph.SLMA)
