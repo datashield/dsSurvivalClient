@@ -15,6 +15,7 @@ ds.coxphSLMAassign(
   x = FALSE,
   y = TRUE,
   control = NULL,
+  use.rms = FALSE,
   datasources = NULL,
   objectname = NULL
 )
@@ -46,6 +47,8 @@ columns will be NA and the variance matrix will contain zeros.}
 
 \item{control}{object of class survival::coxph.control() specifying iteration limit and 
 other control options. Default is survival::coxph.control()}
+
+\item{use.rms}{logical value. If TRUE, the rms::cph() function is used instead of survival::coxph(). Set this to TRUE if you want to use the ds.Predict function.}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login. 
 If the \code{datasources} argument is not specified
