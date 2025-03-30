@@ -13,7 +13,6 @@ ds.acmPlot(
   x_breaks = NULL,
   x_label = "Primary exposure",
   y_label = "Hazard ratio",
-  title = NULL,
   event_n = NULL,
   datasources = NULL
 )
@@ -36,8 +35,6 @@ created using ds.Predict()}
 
 \item{y_label}{label for y-axis (default: "Hazard ratio")}
 
-\item{title}{plot title (optional)}
-
 \item{event_n}{number of events (optional)}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login}
@@ -47,7 +44,7 @@ a list of ggplot objects from each study
 }
 \description{
 This function creates a ggplot visualization for ACM (All-Cause Mortality) analysis
-by calling the server-side acmPlotDS function.
+by getting the prediction data from the server-side acmPlotDS function.
 }
 \details{
 This function takes a prediction object created by ds.Predict and generates

@@ -15,7 +15,6 @@
 #' @param x_breaks numeric vector for x-axis breaks (optional)
 #' @param x_label label for x-axis (default: "Primary exposure")
 #' @param y_label label for y-axis (default: "Hazard ratio")
-#' @param title plot title (optional)
 #' @param event_n number of events (optional)
 #' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login
 #' @return a list of ggplot objects from each study
@@ -37,7 +36,6 @@ ds.acmPlot <- function(pred_obj = NULL,
                       x_breaks = NULL,
                       x_label = "Primary exposure",
                       y_label = "Hazard ratio",
-                      title = NULL,
                       event_n = NULL,
                       datasources = NULL) {
 
@@ -57,7 +55,7 @@ ds.acmPlot <- function(pred_obj = NULL,
     if (!is.null(event_n)) {
       plot_title <- paste0("ACM (n = ", event_n, ")")
     } else {
-      plot_title <- title
+      plot_title <- "ACM"
     }
 
     if (is.null(x_breaks)) {
