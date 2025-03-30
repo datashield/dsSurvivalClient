@@ -1,6 +1,6 @@
 #' @title Client-side function to generate ACM plots in DataSHIELD
 #' @description This function creates a ggplot visualization for ACM (All-Cause Mortality) analysis
-#' by calling the server-side acmPlotDS function.
+#' by getting the prediction data from the server-side acmPlotDS function.
 #'
 #' @details This function takes a prediction object created by ds.Predict and generates
 #' a customizable ggplot visualization. The function allows customization of colors,
@@ -49,17 +49,47 @@ ds.acmPlot <- function(pred_obj = NULL,
     stop("Please provide a valid prediction object name!", call.=FALSE)
   }
 
-  call <- call("acmPlotDS",
-                pred_obj = pred_obj,
-                line_color = line_color,
-                line_size = line_size,
-                ref_line_color = ref_line_color,
-                ref_line_size = ref_line_size,
-                x_breaks = x_breaks,
-                x_label = x_label,
-                y_label = y_label,
-                title = title,
-                event_n = event_n)
-  output <- DSI::datashield.aggregate(datasources, call)
-  return(output)
+  call <- call("acmPlotDS", pred_obj = pred_obj)
+  pred_data <- DSI::datashield.aggregate(datasources, call)
+
+  plots <- lapply(pred_data, function(study_data) {
+    # Create title if event number is provided
+    if (!is.null(event_n)) {
+      plot_title <- paste0("ACM (n = ", event_n, ")")
+    } else {
+      plot_title <- title
+    }
+
+    if (is.null(x_breaks)) {
+      x_min <- min(study_data$Primary_exposure)
+      x_max <- max(study_data$Primary_exposure)
+      x_breaks <- seq(x_min, x_max, length.out = 5)
+    }
+
+    p <- ggplot2::ggplot(study_data) +
+      ggplot2::coord_trans(y = "log10", ylim = c(0.1, 6)) +
+      ggplot2::scale_x_continuous(breaks = x_breaks) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_text(face = "bold", color = "black", size = 15, angle = 0),
+        axis.text.y = ggplot2::element_text(face = "bold", color = "black", size = 15, angle = 0),
+        axis.line = ggplot2::element_line(colour = "darkblue", size = 1, linetype = "solid"),
+        plot.title = ggplot2::element_text(color = "Black", size = 18, face = "bold"),
+        axis.title.x = ggplot2::element_text(color = "grey20", size = 20),
+        axis.title.y = ggplot2::element_text(color = "grey20", size = 20),
+        legend.title = ggplot2::element_text(size = 20),
+        legend.text = ggplot2::element_text(size = 17)
+      ) +
+      ggplot2::xlab(x_label) +
+      ggplot2::ylab(y_label) +
+      ggplot2::geom_line(color = line_color, size = line_size) +
+      ggplot2::geom_hline(yintercept = 1, linetype = "dashed",
+                         color = ref_line_color, size = ref_line_size)
+
+    if (!is.null(plot_title)) {
+      p <- p + ggplot2::ggtitle(plot_title)
+    }
+    return(p)
+  })
+  return(plots)
 }
