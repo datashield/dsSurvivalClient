@@ -61,12 +61,14 @@ ds.acmPlot <- function(pred_obj = NULL,
     }
 
     if (is.null(x_breaks)) {
-      x_min <- min(study_data$Primary_exposure)
-      x_max <- max(study_data$Primary_exposure)
+      x_min <- min(study_data[,1])
+      x_max <- max(study_data[,1])
       x_breaks <- seq(x_min, x_max, length.out = 5)
     }
+    # Needed for plot
+    require(rms)
 
-    p <- ggplot2::ggplot(study_data) +
+    p <- ggplot2::ggplot(study_data, colfill = "Darkblue") +
       ggplot2::coord_trans(y = "log10", ylim = c(0.1, 6)) +
       ggplot2::scale_x_continuous(breaks = x_breaks) +
       ggplot2::theme_bw() +
