@@ -28,10 +28,27 @@ test_that("setup", {
 #
 
 context("ds.Predict::smk")
-test_that("empty function", {
-    ds.Surv(time = "D$time.id", event = )
+test_that("simple usecase", {
+    ds.Surv(time = "D$starttime", time2 = "D$endtime", event = "D$cens", objectname = "surv_object", type = "counting")
 
-    dsSurvivalClient::ds.Predict(fun = "")
+    res.surv.classes <- ds.class("surv_object")
+
+    expect_length(res.surv.classes, 3)
+    expect_equal(res.surv.classes$survival1, 'Surv')
+    expect_equal(res.surv.classes$survival2, 'Surv')
+    expect_equal(res.surv.classes$survival3, 'Surv')
+
+    ds.survfit(formula = "surv_object~1", objectname = "fit_surv_object")
+
+    res.fix.surv.classes <- ds.class("fit_surv_object")
+
+    expect_length(res.fix.surv.classes, 3)
+    expect_true(all(res.fix.surv.classes$survival1 %in% c('survfitms', 'survfit')))
+    expect_true(all(res.fix.surv.classes$survival2 %in% c('survfitms', 'survfit')))
+    expect_true(all(res.fix.surv.classes$survival3 %in% c('survfitms', 'survfit')))
+
+    expect_error(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = "predictions"))
+    print(DSI::datashield.errors())
 })
 
 #
@@ -41,7 +58,7 @@ test_that("empty function", {
 context("ds.Predict::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D"))
+    ds_expect_variables(c("D", "surv_object", "fit_surv_object"))
 })
 
 # disconnect.studies.dataset.d()
