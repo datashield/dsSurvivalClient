@@ -28,4 +28,4 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=root
             - MONGO_INITDB_ROOT_PASSWORD=foobar
     rock:
-        image: datashield/rock-margin-hammer-permissive:latest
+        image: datashield/rock-margin-idiom-permissive:latest
