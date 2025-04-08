@@ -10,8 +10,10 @@ init.studies.dataset.d <- function(variables)
       }
       else 
       {
-#         ds.test_env$login.data <- DSLite::setupCNSIMTest("dsBase", env = ds.test_env)
-         stop("d Data : Not Loadable", call. = FALSE)
+        builder <- DSI::newDSLoginBuilder(.silent = TRUE)
+        builder$append(server = "study1", url = ds.test_env$ip_address_1, user = ds.test_env$user_1, password = ds.test_env$password_1, table = "D.D1", driver = ds.test_env$driver, options=ds.test_env$options_1)
+        ds.test_env$login.data <- builder$build()
+        ds.test_env$login.data <- DSLite::setupDSLiteServer(packages = c(), datasets = c("D1"), logindata = "logindata.dslite.d", pkgs = "dsSurvivalClient", dslite.server = "dslite.server", env = ds.test_env)
       }
       ds.test_env$stats.var <- variables
     }
