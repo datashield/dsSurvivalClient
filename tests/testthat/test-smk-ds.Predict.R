@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-
+# Copyright (c) 2025, XXXX
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -48,7 +48,6 @@ test_that("simple usecase", {
     expect_true(all(res.fix.surv.classes$survival3 %in% c('survfitms', 'survfit')))
 
     expect_error(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = "predictions"))
-    print(DSI::datashield.errors())
 })
 
 #
