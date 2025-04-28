@@ -33,6 +33,6 @@ init.ip.address()
   ds.test_env$options_3 <- "list(ssl_verifyhost=0, ssl_verifypeer=0)"
 
   # switch to "DSLiteDriver" to test with DSLite  
-  # ds.test_env$driver <- "DSLiteDriver"
-  ds.test_env$driver <- "OpalDriver"
+  ds.test_env$driver <- "DSLiteDriver"
+  # ds.test_env$driver <- "OpalDriver"
   ds.test_env$secure_login_details = TRUE

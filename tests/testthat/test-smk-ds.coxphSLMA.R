@@ -1,4 +1,5 @@
 #-------------------------------------------------------------------------------
+# Copyright (c) 2025 XXXX. All rights reserved.
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -32,9 +33,12 @@ test_that("setup", {
 # add survival related server side variables like SURVTIME, etc.
 #   need to convert these to numeric and create server side
 #   variables
-ls_object <- add_server_side_var_survival()
-# snure that objects have been added
-print(ls_object)
+# Enure that objects have been added
+test_that("variable presence checks", {
+    ls_object <- add_server_side_var_survival()
+
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME"))
+})
 
 #
 # Tests
@@ -62,7 +66,7 @@ test_that("simple error,wrong formula", {
     # expect_error( as.character(  ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)~D$age', dataName = 'D')   ) )
     
     # wrong formula
-    expect_error( as.character(  dsSurvivalClient::ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)=D$age', dataName = 'D')   ) )
+    expect_warning( expect_error( as.character(  dsSurvivalClient::ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)=D$age', dataName = 'D')   ) ) )
     
 })
 
