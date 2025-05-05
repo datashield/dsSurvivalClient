@@ -18,6 +18,7 @@
 #'          \item "catg" - categorical
 #'          \item "scored" - ordinal scores
 #'          \item "strat" - stratification
+#'          \item "gTrans" - custom transformation function
 #'        }
 #' @param parms parameters specific to the transformation type:
 #'        \itemize{
@@ -28,6 +29,7 @@
 #'          \item "catg" - numeric vector specifying cut points for categories
 #'          \item "scored" - numeric vector specifying scores for ordinal levels
 #'          \item "strat" - numeric vector specifying cut points for stratification
+#'          \item "gTrans" - function to transform variable using custom function
 #'        }
 #' @param objectname character string specifying the name for the created server-side object
 #' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login.
@@ -104,7 +106,7 @@ ds.rmsTrans <- function(x = NULL,
     }
     
     # Verify transformation parameter
-    valid_transformations <- c("rcs", "asis", "pol", "lsp", "catg", "scored", "strat")
+    valid_transformations <- c("rcs", "asis", "pol", "lsp", "catg", "scored", "strat", "gTrans")
     if (!(transformation %in% valid_transformations)) {
         stop(paste("Invalid transformation. Must be one of:", 
                   paste(valid_transformations, collapse=", ")), call.=FALSE)
