@@ -25,6 +25,7 @@ Possible values are:
   \item "catg" - categorical
   \item "scored" - ordinal scores
   \item "strat" - stratification
+  \item "gTrans" - custom transformation function
 }}
 
 \item{parms}{parameters specific to the transformation type:
@@ -36,6 +37,7 @@ Possible values are:
   \item "catg" - numeric vector specifying cut points for categories
   \item "scored" - numeric vector specifying scores for ordinal levels
   \item "strat" - numeric vector specifying cut points for stratification
+  \item "gTrans" - function to transform variable using custom function
 }}
 
 \item{objectname}{character string specifying the name for the created server-side object}
@@ -62,44 +64,32 @@ Server function called: \code{rmsTransDS}
 \examples{
 \dontrun{
   ## Version 1.0.0
-  
+
   # connecting to the Opal servers
   require('DSI')
   require('DSOpal')
   require('dsBaseClient')
-  
+
   builder <- DSI::newDSLoginBuilder()
-  builder$append(server = "study1", 
-                url = "http://192.168.56.100:8080/", 
-                user = "administrator", password = "datashield_test&", 
-                table = "SURVIVAL.EXPAND_NO_MISSING1", driver = "OpalDriver")
+  builder$append(server = "study1",
+                url = "http://192.168.56.100:8080/",
+                user = "administrator", password = "datashield_test&",
+                table = "SURVIVAL.EXPAND_WITH_MISSING1", driver = "OpalDriver")
   logindata <- builder$build()
-  
+
   connections <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "D")
-  
+
   # Examples of different transformations:
-  
-  # 1. Restricted cubic splines with custom knots
-  ds.rmsTrans(x = "D$age",
+
+  ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
+  ds.rmsTrans(x = "D2.1$age.60",
               transformation = "rcs",
               parms = c(20, 40, 60, 80),
               objectname = "age_rcs")
-  
-  # 2. Polynomial transformation of degree 2
-  ds.rmsTrans(x = "D$bmi",
-              transformation = "pol",
-              parms = 2,
+  ds.rmsTrans(x = "D2.1$bmi",
+                 transformation = "pol",
+                 parms = 2,
               objectname = "bmi_poly")
-  
-  # 3. Categorical transformation with WHO BMI categories
-  ds.rmsTrans(x = "D$bmi",
-              transformation = "catg",
-              parms = c(18.5, 25, 30, 35),
-              objectname = "bmi_cat")
-  
-  # Use in a Cox model
-  ds.coxph.SLMA(formula = "surv_object ~ age_rcs + bmi_cat")
-  
   # Clear the Datashield R sessions and logout
   datashield.logout(connections)
 }
