@@ -32,6 +32,15 @@ test_that("simple error,wrong formula", {
 })
 
 test_that("simple summary of survival object, checking message", {
+    ds.datadist(data = "D", objectname = "dd")
+   
+    dd.exists <- ds.exists("dd")
+    expect_length(dd.exists, 3)
+    expect_true(dd.exists[[1]])
+    expect_true(dd.exists[[2]])
+    expect_true(dd.exists[[3]])
+
+    ds.useDatadist(datadist = "dd")
 })
 
 context("ds.useDatadist::smk")
@@ -58,7 +67,7 @@ test_that("create a Surv object with a parameter which is not of correct type (n
 context("ds.useDatadist::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D"))
+    ds_expect_variables(c("D", "dd"))
 })
 
 # disconnect.studies.dataset.d()
