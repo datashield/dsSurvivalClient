@@ -27,10 +27,40 @@ test_that("setup", {
 # Tests
 #
 
-context("ds.datadist::arg")
+context("ds.datadist::arg empty arguments")
 test_that("empty arguments",  {
  
     expect_error(dsSurvivalClient::ds.datadist(), "Please provide the name of a data frame in the 'data' parameter")
+})
+
+context("ds.datadist::arg objectname is NULL, adjust_to not list")
+test_that("objectname is NULL, adjust_to not list",  {
+ 
+    expect_error(expect_warning(dsSurvivalClient::ds.datadist(data = "D", adjust_to = 1.0, objectname = NULL), "No objectname provided, using default: datadist_D"), "adjust_to must be a named list")
+})
+
+context("ds.datadist::arg objectname is not NULL, adjust_to not list")
+test_that("objectname is not NULL, adjust_to not list",  {
+ 
+    expect_error(dsSurvivalClient::ds.datadist(data = "D", adjust_to = 1.0, objectname = "test"), "adjust_to must be a named list")
+})
+
+context("ds.datadist::arg objectname is not NULL, adjust_to not valid 1")
+test_that("objectname is not NULL, adjust_to not valid 1",  {
+
+    expect_error(dsSurvivalClient::ds.datadist(data = "D", adjust_to = list("a"), objectname = "test"), "all elements in adjust_to must be named")
+})
+
+context("ds.datadist::arg objectname is not NULL, adjust_to not valid 2")
+test_that("objectname is not NULL, adjust_to not valid 2",  {
+
+    expect_error(dsSurvivalClient::ds.datadist(data = "D", adjust_to = list(a="a", "b"), objectname = "test"), "all elements in adjust_to must be named")
+})
+
+context("ds.datadist::arg objectname is not NULL, adjust_to not valid 3")
+test_that("objectname is not NULL, adjust_to not valid 3",  {
+ 
+    expect_error(dsSurvivalClient::ds.datadist(data = "D", adjust_to = list(a="a"), objectname = "test"), "adjust_to values must be either 'min', 'max'. or 'mean'")
 })
 
 #
