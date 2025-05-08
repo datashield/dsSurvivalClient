@@ -12,7 +12,7 @@
 # Set up
 #
 
-context("ds.finegray::smk::setup")
+context("ds.rcs::smk::setup")
 
 # load "d" test data set
 # connect.studies.dataset.d(list('ID', 'age', 'sex', 'smoke', 'fruit', 'veg', 'edu', 'eth', 'job', 'slf_hlth', 'alc', 'mobility', 'fasting', 'med_lipid', 'med_bp', 'med_glucose', 'prev_cvd', 'prev_ht', 'prev_bronchitis', 'body_fat_percent'))
@@ -27,34 +27,29 @@ test_that("setup", {
 # Tests
 #
 
-context("ds.finegray::smk simple example")
+context("ds.rcs::smk")
+test_that("simple error,wrong formula", {
+})
+
+context("ds.rcs::smk simple example")
 test_that("simple example",  {
+ 
+    res <- dsSurvivalClient::ds.rcs(x = "D$age.60", knots = 5, objectname = "age_rcs")
 
-    ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
-
-    ds.asNumeric(x.name = "D2.1$cens",      newobj = "EVENT")
-    ds.asNumeric(x.name = "D2.1$survtime",  newobj = "SURVTIME")
-    ds.asNumeric(x.name = "D2.1$starttime", newobj = "STARTTIME")
-    ds.asNumeric(x.name = "D2.1$endtime",   newobj = "ENDTIME")
-
-    dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object')
-
-    res <- ds.finegray(formula = "Surv(endtime, cens) ~ age.60 + female", data = "D2.1", etype = 1, newobj = "fg_data")
-
-    expect_length(res, 0)
+    expect_null(res)
 })
 
 #
 # Done
 #
 
-context("ds.finegray::smk::shutdown")
+context("ds.rcs::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "D2.1", "D2.2", "D2.3", "D2.4", "D2.5", "imputed_mids", "EVENT", "SURVTIME", "STARTTIME", "ENDTIME", "surv_object", "fg_data"))
+    ds_expect_variables(c("D", "age_rcs"))
 })
 
 # disconnect.studies.dataset.d()
 disconnect.studies.dataset.survival()
 
-context("ds.finegray::smk::done")
+context("ds.rcs::smk::done")
