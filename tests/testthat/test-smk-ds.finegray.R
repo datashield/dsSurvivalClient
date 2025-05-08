@@ -15,9 +15,9 @@
 context("ds.finegray::smk::setup")
 
 # load "d" test data set
-connect.studies.dataset.d(list('ID', 'age', 'sex', 'smoke', 'fruit', 'veg', 'edu', 'eth', 'job', 'slf_hlth', 'alc', 'mobility', 'fasting', 'med_lipid', 'med_bp', 'med_glucose', 'prev_cvd', 'prev_ht', 'prev_bronchitis', 'body_fat_percent'))
+# connect.studies.dataset.d(list('ID', 'age', 'sex', 'smoke', 'fruit', 'veg', 'edu', 'eth', 'job', 'slf_hlth', 'alc', 'mobility', 'fasting', 'med_lipid', 'med_bp', 'med_glucose', 'prev_cvd', 'prev_ht', 'prev_bronchitis', 'body_fat_percent'))
 # load "survival" test data set
-# connect.studies.dataset.survival(list('id', 'study.id', 'time.id', 'starttime', 'endtime', 'survtime', 'cens', 'age.60', 'female', 'noise.56', 'pm10.16', 'bmi.26'))
+connect.studies.dataset.survival(list('id', 'study.id', 'time.id', 'starttime', 'endtime', 'survtime', 'cens', 'age.60', 'female', 'noise.56', 'pm10.16', 'bmi.26'))
 
 test_that("setup", {
     ds_expect_variables(c("D"))
@@ -29,12 +29,16 @@ test_that("setup", {
 
 context("ds.finegray::smk simple example")
 test_that("simple example",  {
- 
-#    res <- expect_error(ds.finegray("Surv(time, status) ~ age + sex", data = "D", etype = 1, newobj = "fg_data"))
-#    print(datashield.errors())
 
-#    expect_length(res, 6)
-#    print(res)
+    ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
+
+    ds.asNumeric(x.name = "D2.1$cens",      newobj = "EVENT")
+    ds.asNumeric(x.name = "D2.1$survtime",  newobj = "SURVTIME")
+    ds.asNumeric(x.name = "D2.1$starttime", newobj = "STARTTIME")
+    ds.asNumeric(x.name = "D2.1$endtime",   newobj = "ENDTIME")
+
+    dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object')
+ 
 })
 
 #
@@ -44,7 +48,7 @@ test_that("simple example",  {
 context("ds.finegray::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D"))
+    ds_expect_variables(c("D", "D2.1", "D2.2", "D2.3", "D2.4", "D2.5", "imputed_mids", "EVENT", "SURVTIME", "STARTTIME", "ENDTIME", "surv_object"))
 })
 
 disconnect.studies.dataset.d()
