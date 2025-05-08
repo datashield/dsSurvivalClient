@@ -60,29 +60,52 @@ Server function called: \code{finegrayDS}
 \dontrun{
   ## Version 1.0.0
 
-  # connecting to the Opal servers
+  # First, set up the connection to the Opal server
   builder <- DSI::newDSLoginBuilder()
   builder$append(server = "study1",
                  url = "http://192.168.56.100:8080/",
-                 user = "administrator", password = "datashield_test&",
-                 table = "SURVIVAL.EXPAND_NO_MISSING1", driver = "OpalDriver")
+                 user = "administrator",
+                 password = "datashield_test&",
+                 table = "SURVIVAL.EXPAND_WITH_MISSING1",
+                 driver = "OpalDriver")
   logindata <- builder$build()
 
   connections <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "D")
 
+  ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
+
+  ds.asNumeric(x.name = "D2.1$cens",
+            newobj = "EVENT",
+            datasources = connections)
+
+  ds.asNumeric(x.name = "D2.1$survtime",
+            newobj = "SURVTIME",
+            datasources = connections)
+
+  ds.asNumeric(x.name = "D2.1$starttime",
+            newobj = "STARTTIME",
+            datasources = connections)
+
+  ds.asNumeric(x.name = "D2.1$endtime",
+            newobj = "ENDTIME",
+            datasources = connections)
+
+  dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME',
+        event = 'EVENT', objectname='surv_object')
+
   # Create a Fine-Gray dataset for competing risks analysis
-  ds.finegray(formula = "Surv(time, status) ~ age + sex",
-              data = "D",
+  ds.finegray(formula = "Surv(endtime, cens) ~ age.60 + female",
+              data = "D2.1",
               etype = 1,
               newobj = "fg_data")
 
   # Now use the created dataset for a weighted Cox model
-  ds.coxph.SLMAassign("Surv(fgstart, fgstop, fgstatus) ~ age + sex",
-                      weights = "fgwt",
-                      data = "fg_data",
-                      newobj = "coxph_model")
+  ds.coxphSLMAassign(formula = "survival::Surv(fgstart, fgstop, fgstatus) ~ age.60 + female",
+                      dataName = "fg_data",
+                      objectname = "coxph_model")
 
-  # Clear the Datashield R sessions and logout
+
+  # When finished, clear the session and logout
   datashield.logout(connections)
 }
 
