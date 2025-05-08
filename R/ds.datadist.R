@@ -65,7 +65,7 @@ ds.datadist <- function(data = NULL,
     if (!is.list(adjust_to)) {
       stop("adjust_to must be a named list", call.=FALSE)
     }
-    if (!all(names(adjust_to) != "")) {
+    if (is.null(names(adjust_to)) || any(names(adjust_to) == "")) {
       stop("all elements in adjust_to must be named", call.=FALSE)
     }
     if (!all(adjust_to %in% c("min", "max", "mean"))) {
