@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-
+# Copyright (c) 2025 XXXX. All rights reserved.
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -28,14 +28,17 @@ test_that("setup", {
 #
 
 context("ds.acmPlot::smk")
-test_that("simple error,wrong formula", {
-})
+test_that("simple example",  {
 
-context("ds.acmPlot::smk")
-test_that("create a Surv object with a parameter which is not of correct type (not numeric)",  {
- 
-    expect_error( as.character( dsSurvivalClient::ds.acmPlot(time='D$female', time2='ENDTIME', event='EVENT', objectname='surv_object', type='counting') ) )
-    
+#     ds.Surv(time = "D$starttime", time2 = "D$endtime", event = "D$cens", objectname = "surv_object", type = "counting")
+#     ds.survfit(formula = "surv_object~1", objectname = "fit_surv_object")
+    ds.rcs(x = "D$age.60", knots = 5, objectname = "age_rcs")
+    expect_error(ds.Predict(fit="age_rcs", age=30:70, sex="both", conf.int=0.95, ref.zero=TRUE, objectname="pred_obj"))
+    print(datashield.errors())
+
+    res <- dsSurvivalClient::ds.acmPlot(pred_obj = "pred_obj", line_color = "darkblue", x_label = "BMI", event_n = 1000)
+
+    expect_null(res)
 })
 
 #
@@ -45,7 +48,7 @@ test_that("create a Surv object with a parameter which is not of correct type (n
 context("ds.acmPlot::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D"))
+    ds_expect_variables(c("D", "fit_surv_object", "surv_object", "pred_obj"))
 })
 
 # disconnect.studies.dataset.d()
