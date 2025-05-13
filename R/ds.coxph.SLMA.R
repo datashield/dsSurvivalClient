@@ -146,31 +146,30 @@ ds.coxph.SLMA <- function(formula = NULL,
    ####################################################################
    # Logic for parsing control argument
    ####################################################################
-   if (!is.null(control))
-   {	
-        # everything needs to be passed as formula to server
-	#	otherwise will not go through parser
-	#	and a formula needs a ~ something
-	#	so introduce dummy ~ something and remove
-	#	it on server side   
-	control <- paste0(control, "~bbbb")  
+   if (!is.null(control)){
+     
+     # everything needs to be passed as formula to server
+  	 #	otherwise will not go through parser
+  	 #	and a formula needs a ~ something
+  	 #	so introduce dummy ~ something and remove
+  	 #	it on server side   
+  	 control <- paste0(control, "~bbbb")  
 	   
-        control <- Reduce(paste, deparse(control))
-        control <- gsub("survival::coxph.control(", "aaaaa", control, fixed =  TRUE)
-        control <- gsub("|", "xxx", control, fixed = TRUE)
-        control <- gsub("(", "yyy", control, fixed = TRUE)
-        control <- gsub(")", "zzz", control, fixed = TRUE)
-        control <- gsub("/", "ppp", control, fixed = TRUE)
-        control <- gsub(":", "qqq", control, fixed = TRUE)
-	control <- gsub(",", "rrr", control, fixed = TRUE)
-        control <- gsub(" ", "",    control, fixed = TRUE)
-        control <- gsub("=", "lll", control, fixed = TRUE)
-	
-	control <- stats::as.formula(control)   
+     control <- Reduce(paste, deparse(control))
+     control <- gsub("survival::coxph.control(", "aaaaa", control, fixed =  TRUE)
+     control <- gsub("|", "xxx", control, fixed = TRUE)
+     control <- gsub("(", "yyy", control, fixed = TRUE)
+     control <- gsub(")", "zzz", control, fixed = TRUE)
+     control <- gsub("/", "ppp", control, fixed = TRUE)
+     control <- gsub(":", "qqq", control, fixed = TRUE)
+	   control <- gsub(",", "rrr", control, fixed = TRUE)
+     control <- gsub(" ", "",    control, fixed = TRUE)
+     control <- gsub("=", "lll", control, fixed = TRUE)
+	   control <- stats::as.formula(control)   
    }	   
 	
-	
-   calltext <- call("coxphSLMADS", formula=formula, dataName, weights, init, ties, singular.ok, model, x, y, control)
+   calltext <- call("coxphSLMADS", formula=formula, dataName, weights, init, ties, 
+                    singular.ok, model, x, y, control)
    
    # call aggregate function
    output <- DSI::datashield.aggregate(datasources, calltext)
@@ -245,16 +244,10 @@ ds.coxph.SLMA <- function(formula = NULL,
        }	   
 	
        # return this SLMA pooled metafor::rma() list
-       return (list(output = output,
-		    betamatrix = betamatrix,
-		    sematrix = sematrix,
-		    SLMA.pooled.ests.matrix = SLMA.pooled.ests.matrix
-		   )
-	      )
+       return (list(output = output, betamatrix = betamatrix,
+		    sematrix = sematrix, SLMA.pooled.ests.matrix = SLMA.pooled.ests.matrix))
 	   
    }	   
-
 	
 }
 #ds.coxph.SLMA
-
