@@ -12,7 +12,7 @@
 # Set up
 #
 
-context("ds.acmPlot::smk::setup")
+context("ds.Surv::arg::setup")
 
 # load "d" test data set
 # connect.studies.dataset.d(list('ID', 'age', 'sex', 'smoke', 'fruit', 'veg', 'edu', 'eth', 'job', 'slf_hlth', 'alc', 'mobility', 'fasting', 'med_lipid', 'med_bp', 'med_glucose', 'prev_cvd', 'prev_ht', 'prev_bronchitis', 'body_fat_percent'))
@@ -27,31 +27,35 @@ test_that("setup", {
 # Tests
 #
 
-context("ds.acmPlot::smk")
-test_that("simple example",  {
+context("ds.Surv::arg time is NULL")
+test_that("time is NULL",  {
+ 
+    expect_error(dsSurvivalClient::ds.Surv(time = NULL), " Please provide a valid survival start time or follow-up time parameter")
+})
 
-#     ds.Surv(time = "D$starttime", time2 = "D$endtime", event = "D$cens", objectname = "surv_object", type = "counting")
-#     ds.survfit(formula = "surv_object~1", objectname = "fit_surv_object")
-    ds.rcs(x = "D$age.60", knots = 5, objectname = "age_rcs")
-    expect_error(ds.Predict(fit="age_rcs", age=30:70, sex="both", conf.int=0.95, ref.zero=TRUE, objectname="pred_obj"))
-    print(datashield.errors())
+context("ds.Surv::arg event is NULL")
+test_that("event is NULL",  {
+ 
+    expect_error(dsSurvivalClient::ds.Surv(time = 0, event = NULL), " Please provide a valid survival event parameter")
+})
 
-    res <- dsSurvivalClient::ds.acmPlot(pred_obj = "pred_obj", line_color = "darkblue", x_label = "BMI", event_n = 1000)
-
-    expect_null(res)
+context("ds.Surv::arg objectname is NULL")
+test_that("objectname is NULL",  {
+ 
+    expect_error(dsSurvivalClient::ds.Surv(time = 0, event = 0, objectname = NULL), " Please provide a valid objectname to store the server-side survival::Surv() object", fixed = TRUE)
 })
 
 #
 # Done
 #
 
-context("ds.acmPlot::smk::shutdown")
+context("ds.Surv::arg::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "age_rcs"))
+    ds_expect_variables(c("D"))
 })
 
 # disconnect.studies.dataset.d()
 disconnect.studies.dataset.survival()
 
-context("ds.acmPlot::smk::done")
+context("ds.Surv::arg::done")
