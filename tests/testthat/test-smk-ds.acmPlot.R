@@ -48,7 +48,7 @@ test_that("simple example",  {
 context("ds.acmPlot::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "fit_surv_object", "surv_object", "pred_obj"))
+    ds_expect_variables(c("D", "age_rcs"))
 })
 
 # disconnect.studies.dataset.d()

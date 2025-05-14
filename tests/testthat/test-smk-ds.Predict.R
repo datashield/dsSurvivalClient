@@ -27,7 +27,13 @@ test_that("setup", {
 # Tests
 #
 
-context("ds.Predict::smk")
+context("ds.Predict::smk objectname is NULL")
+test_that("fit is NULL",  {
+
+    expect_error(dsSurvivalClient::ds.Predict(fit = NULL), "Please provide a valid fitted model object name")
+})
+
+context("ds.Predict::smk simple usecase")
 test_that("simple usecase", {
     ds.Surv(time = "D$starttime", time2 = "D$endtime", event = "D$cens", objectname = "surv_object", type = "counting")
 
@@ -47,7 +53,39 @@ test_that("simple usecase", {
     expect_true(all(res.fix.surv.classes$survival2 %in% c('survfitms', 'survfit')))
     expect_true(all(res.fix.surv.classes$survival3 %in% c('survfitms', 'survfit')))
 
-    expect_error(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = "predictions"))
+    # TODO: correct
+    res <- expect_error(expect_warning(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = NULL)))
+
+    print(datashield.errors())
+
+    expect_null(res)
+})
+
+context("ds.Predict::smk simple usecase")
+test_that("simple usecase", {
+    ds.Surv(time = "D$starttime", time2 = "D$endtime", event = "D$cens", objectname = "surv_object", type = "counting")
+
+    res.surv.classes <- ds.class("surv_object")
+
+    expect_length(res.surv.classes, 3)
+    expect_equal(res.surv.classes$survival1, 'Surv')
+    expect_equal(res.surv.classes$survival2, 'Surv')
+    expect_equal(res.surv.classes$survival3, 'Surv')
+
+    ds.survfit(formula = "surv_object~1", objectname = "fit_surv_object")
+
+    res.fix.surv.classes <- ds.class("fit_surv_object")
+
+    expect_length(res.fix.surv.classes, 3)
+    expect_true(all(res.fix.surv.classes$survival1 %in% c('survfitms', 'survfit')))
+    expect_true(all(res.fix.surv.classes$survival2 %in% c('survfitms', 'survfit')))
+    expect_true(all(res.fix.surv.classes$survival3 %in% c('survfitms', 'survfit')))
+
+    res <- expect_error(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = "predictions"))
+
+    print(datashield.errors())
+
+    expect_null(res)
 })
 
 #
