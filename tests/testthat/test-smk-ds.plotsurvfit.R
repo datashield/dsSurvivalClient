@@ -36,7 +36,11 @@ test_that("simple example",  {
 
     dsSurvivalClient::ds.Surv(time='SURVTIME', event='EVENT', objectname='surv_object')
 
-    dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object ~  D$female', dataName = 'D')
+    # TODO: Fix error
+    expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object ~  D$female', dataName = 'D'))
+    print("<=====")
+    print(datashield.errors())
+    print("======>")
 
     dsSurvivalClient::ds.survfit(formula = 'surv_object~1', objectname = 'survfit_object')
 

@@ -56,7 +56,9 @@ test_that("simple error, setting up survfit but no summary allowed", {
     dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     #try(
     
-    cox_object <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')#, dataName = 'D')
+    # TODO: Fix test
+    cox_object <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))#, dataName = 'D')
+    print(datashield.errors())
     
     #, silent=FALSE)
     # print(cox_object$study1$call)

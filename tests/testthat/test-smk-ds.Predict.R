@@ -81,6 +81,7 @@ test_that("simple usecase", {
     expect_true(all(res.fix.surv.classes$survival2 %in% c('survfitms', 'survfit')))
     expect_true(all(res.fix.surv.classes$survival3 %in% c('survfitms', 'survfit')))
 
+    # TODO: correct
     res <- expect_error(ds.Predict(fit = "fit_surv_object", age = 30:70, sex = "both", conf.int = 0.95, ref.zero = TRUE, objectname = "predictions"))
 
     print(datashield.errors())
