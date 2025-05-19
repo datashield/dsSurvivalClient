@@ -40,23 +40,21 @@ Server function called: \code{rcsDS}
   require('dsBaseClient')
   
   builder <- DSI::newDSLoginBuilder()
-  builder$append(server = "study1", 
-                url = "http://192.168.56.100:8080/", 
-                user = "administrator", password = "datashield_test&", 
-                table = "SURVIVAL.EXPAND_NO_MISSING1", driver = "OpalDriver")
+  builder$append(server = "study1",
+                 url = "http://192.168.56.100:8080/",
+                 user = "administrator",
+                 password = "datashield_test&",
+                 table = "SURVIVAL.EXPAND_WITH_MISSING1",
+                 driver = "OpalDriver")
   logindata <- builder$build()
-  
   connections <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "D")
+  ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
   
-  # Create restricted cubic splines for age variable
-  dsSurvivalClient::ds.rcs(x = "D$age",
-                          knots = 5,
-                          objectname = "age_rcs")
+  dsSurvivalClient::ds.rcs(x = "D2.1$age",
+                             knots = 5,
+                             objectname = "age_rcs")
   
-  # Use the transformed variable in a Cox model
-  dsSurvivalClient::ds.coxph.SLMA(formula = "surv_object ~ age_rcs")
-  
-  # Clear the Datashield R sessions and logout
+  # When finished, clear the session and logout
   datashield.logout(connections)
 }
 
