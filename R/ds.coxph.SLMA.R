@@ -10,7 +10,7 @@
 #' specifying the formula that you want to pass to the server-side.
 #' For more information see \strong{Details}. 
 #' @param dataName character string of name of data frame
-#' @param weights vector of case weights
+#' @param .weights vector of case weights
 #' @param init vector of initial values of the iteration.
 #' @param ties character string specifying the method for tie handling. The Efron approximation is
 #'	used as the default. Other options are 'breslow' and 'exact'.
@@ -82,7 +82,7 @@
 #' @export
 ds.coxph.SLMA <- function(formula = NULL,
 			  dataName = NULL,
-			  weights = NULL,
+			  .weights = NULL,
 			  init = NULL,
 			  ties = 'efron',
 			  singular.ok = TRUE,
@@ -177,7 +177,7 @@ ds.coxph.SLMA <- function(formula = NULL,
 	   control <- stats::as.formula(control)   
    }	   
 	
-   calltext <- call("coxphSLMADS", formula=formula, dataName, weights, init, ties, 
+   calltext <- call("coxphSLMADS", formula=formula, dataName, .weights, init, ties, 
                     singular.ok, model, x, y, control)
    
    # call aggregate function
