@@ -55,7 +55,7 @@ test_that("simple error,wrong formula", {
     dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     #try(
     # TODO: Fix Test
-    cox_object <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')#, dataName = 'D'))
+    cox_object <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))#, dataName = 'D')
     print(datashield.errors())
 
     #, silent=FALSE)
