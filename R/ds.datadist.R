@@ -24,21 +24,19 @@
 #'   
 #'   # connecting to the Opal servers
 #'   builder <- DSI::newDSLoginBuilder()
-#'   builder$append(server = "study1", 
-#'                 url = "http://192.168.56.100:8080/", 
-#'                 user = "administrator", password = "datashield_test&", 
-#'                 table = "SURVIVAL.EXPAND_NO_MISSING1", driver = "OpalDriver")
+#'   builder$append(server = "study1",
+#'                  url = "http://192.168.56.100:8080/",
+#'                  user = "administrator",
+#'                  password = "datashield_test&",
+#'                  table = "SURVIVAL.EXPAND_WITH_MISSING1",
+#'                  driver = "OpalDriver")
 #'   logindata <- builder$build()
-#'   
 #'   connections <- DSI::datashield.login(logins = logindata, assign = TRUE, symbol = "D")
-#'   
-#'   # Create datadist object for the entire data frame
-#'   # and set "Adjust to" values for specific variables
-#'   ds.datadist(data = "D", 
-#'               adjust_to = list(age="min", weight="max", height="mean"),
-#'               objectname = "dist1")
-#'               
-#'   # Clear the Datashield R sessions and logout
+#'   ds.mice(data = 'D', m = 5, method = 'rf', newobj_df = 'D2', seed = 'fixed', newobj_mids = "imputed_mids")
+#'
+#'   ds.datadist(data = 'D2.1', adjust_to = list(age.60 = 'min'))
+#'
+#'   # When finished, clear the session and logout
 #'   datashield.logout(connections)
 #' }
 #'
