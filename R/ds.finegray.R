@@ -8,7 +8,7 @@
 #' 
 #' @param formula a survival formula with survival object on the left and covariates on the right 
 #' @param data character string specifying the name of the data frame that contains the variables in the model
-#' @param weights optional character string specifying a variable providing weights for the observations
+#' @param .weights optional character string specifying a variable providing weights for the observations
 #' @param na.action character string specifying how to handle missing values; default is "na.pass"
 #' @param etype the event type for which a data set will be generated (character or numeric)
 #' @param prefix prefix for the new variables that will be added to the dataset; default is "fg"
@@ -77,7 +77,7 @@
 #' @export
 ds.finegray <- function(formula = NULL,
                         data = NULL,
-                        weights = NULL,
+                        .weights = NULL,
                         na.action = "na.pass",
                         etype = NULL,
                         prefix = "fg",
@@ -133,7 +133,7 @@ ds.finegray <- function(formula = NULL,
   calltext <- call("finegrayDS", 
                   formula = formula,
                   data = data,
-                  weights = weights,
+                  .weights = .weights,
                   na.action = na.action,
                   etype = etype,
                   prefix = prefix,

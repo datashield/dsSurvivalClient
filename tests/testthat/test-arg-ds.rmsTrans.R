@@ -12,7 +12,7 @@
 # Set up
 #
 
-context("ds.plotsurvfit::smk::setup")
+context("ds.rmsTrans::arg::setup")
 
 # load "d" test data set
 # connect.studies.dataset.d(list('ID', 'age', 'sex', 'smoke', 'fruit', 'veg', 'edu', 'eth', 'job', 'slf_hlth', 'alc', 'mobility', 'fasting', 'med_lipid', 'med_bp', 'med_glucose', 'prev_cvd', 'prev_ht', 'prev_bronchitis', 'body_fat_percent'))
@@ -27,37 +27,29 @@ test_that("setup", {
 # Tests
 #
 
-context("ds.plotsurvfit::smk simple example")
-test_that("simple example",  {
+context("ds.rmsTrans::arg x is NULL")
+test_that("x is NULL",  {
+ 
+    expect_error(dsSurvivalClient::ds.rmsTrans(x = NULL), "Please provide a valid variable name to transform")
+})
 
-    ds.asNumeric(x.name = "D$cens", newobj = "EVENT")
-
-    ds.asNumeric(x.name = "D$survtime", newobj = "SURVTIME")
-
-    dsSurvivalClient::ds.Surv(time='SURVTIME', event='EVENT', objectname='surv_object')
-
-    # TODO: Fix error
-    expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object ~  D$female', dataName = 'D'))
-    print(datashield.errors())
-
-    dsSurvivalClient::ds.survfit(formula = 'surv_object~1', objectname = 'survfit_object')
-
-    res <- dsSurvivalClient::ds.plotsurvfit(formula = 'survfit_object')
-
-    expect_length(res, 3)
+context("ds.rmsTrans::arg x is not NULL, objectname is NULL")
+test_that("x is not NULL, objectname is NULL",  {
+ 
+    expect_error(dsSurvivalClient::ds.rmsTrans(x = "", objectname = NULL), "Please provide a valid objectname to store the transformed variable")
 })
 
 #
 # Done
 #
 
-context("ds.plotsurvfit::smk::shutdown")
+context("ds.rmsTrans::arg::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "EVENT", "SURVTIME", "surv_object", "survfit_object"))
+    ds_expect_variables(c("D"))
 })
 
 # disconnect.studies.dataset.d()
 disconnect.studies.dataset.survival()
 
-context("ds.plotsurvfit::smk::done")
+context("ds.rmsTrans::arg::done")

@@ -46,7 +46,7 @@ test_that("variable presence checks", {
 
               
 context("ds.coxphSLMA::smk")
-test_that("simple error,wrong formula", {
+test_that("simple error, wrong formula", {
     
     #try( cox_object <- ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)~D$age.60')#, dataName = 'D') 
     #, silent = FALSE)
@@ -68,7 +68,7 @@ test_that("simple error,wrong formula", {
     # TODO: Check test, why error
     # wrong formula
     expect_warning( expect_error( as.character(  dsSurvivalClient::ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)=D$age', dataName = 'D')   ) ) )
-    print(datashield.error())
+    print(datashield.errors())
 })
 
 
