@@ -91,8 +91,7 @@ test_that("simple equal test, checking coefficients", {
     # summary(cox_object)
 
     # TODO: Check Test
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
+    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
     cat("Model coeff")
     cat(coxph_model_full$survival1$coefficients[1])
     # print(summary(coxph_model_full))
@@ -111,13 +110,11 @@ test_that("summary of Cox model, error since only summary of survival object all
     
     surv_object <- dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
 
-    # TODO: Check Test
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
-    
-    expect_error(as.character(ds.summary(x='coxph_model_full')) )
-    
-    
+    dsSurvivalClient::ds.coxphSLMAassign(formula = 'surv_object~AGE', objectname = "coxph_model_full")
+
+    coxph_model_summary <- ds.coxphSummary(x='coxph_model_full')
+
+    expect_length(coxph_model_summary, 3)    
 })
 
 
@@ -128,7 +125,7 @@ test_that("summary of Cox model, error since only summary of survival object all
 context("ds.coxphSLMAassign::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME", "surv_object"))
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME", "surv_object", "weights_obj", "coxph_model_full"))
 })
 
 disconnect.studies.dataset.cnsim()

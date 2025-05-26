@@ -36,9 +36,7 @@ test_that("simple example",  {
 
     dsSurvivalClient::ds.Surv(time='SURVTIME', event='EVENT', objectname='surv_object')
 
-    # TODO: Fix error
-    expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object ~  D$female', dataName = 'D'))
-    print(datashield.errors())
+    dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object ~  D$female', dataName = 'D')
 
     dsSurvivalClient::ds.survfit(formula = 'surv_object~1', objectname = 'survfit_object')
 
@@ -54,7 +52,7 @@ test_that("simple example",  {
 context("ds.plotsurvfit::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "EVENT", "SURVTIME", "surv_object", "survfit_object"))
+    ds_expect_variables(c("D", "EVENT", "SURVTIME", "surv_object", "survfit_object", "weights_obj"))
 })
 
 # disconnect.studies.dataset.d()
