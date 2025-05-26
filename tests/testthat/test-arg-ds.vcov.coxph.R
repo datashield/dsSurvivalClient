@@ -1,5 +1,6 @@
 #-------------------------------------------------------------------------------
 # Copyright (c) 2019-2020 University of Newcastle upon Tyne. All rights reserved.
+# Copyright (c) 2025 XXXX. All rights reserved.
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -32,15 +33,16 @@ test_that("setup", {
 # add survival related server side variables like SURVTIME, etc.
 #   need to convert these to numeric and create server side
 #   variables
-ls_object <- add_server_side_var_survival()
-# snure that objects have been added
-print(ls_object)
+# enure that objects have been added
+test_that("variable presence checks", {
+    ls_object <- add_server_side_var_survival()
+
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME"))
+})
 
 #
 # Tests
 #
-
-
 
 context("ds.vcov.coxph::arg::test errors")
     
@@ -58,9 +60,9 @@ test_that("vcovcoxph_errors", {
 
 context("ds.vcov.coxph::arg::shutdown")
 
-#test_that("shutdown", {
-#    ds_expect_variables(c("D"))
-#})
+test_that("shutdown", {
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME"))
+})
 
 disconnect.studies.dataset.survival()
 

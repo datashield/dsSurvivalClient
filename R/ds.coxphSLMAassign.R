@@ -13,7 +13,7 @@
 #' If the \code{datasources} argument is not specified
 #' the default set of connections will be used: see \code{\link{datashield.connections_default}}.
 #' @param dataName character string of name of data frame
-#' @param weights vector of case weights
+#' @param .weights vector of case weights
 #' @param init vector of initial values of the iteration.
 #' @param ties character string specifying the method for tie handling. The Efron approximation is
 #'	used as the default. Other options are 'breslow' and 'exact'.
@@ -26,6 +26,7 @@
 #' @param y logical value. If TRUE, the response vector is returned in component y.
 #' @param control object of class survival::coxph.control() specifying iteration limit and 
 #'		other control options. Default is survival::coxph.control()
+#' @param use.rms logical value. If TRUE, the rms::cph() function is used instead of survival::coxph(). Set this to TRUE if you want to use the ds.Predict function.
 #' @param objectname character name of server-side variable to store the 
 #'     Cox model
 #' @return NULL
@@ -83,7 +84,7 @@
 #' @export
 ds.coxphSLMAassign <- function(formula = NULL,
 			       dataName = NULL,
-			       weights = NULL,
+			       .weights = NULL,
 			       init = NULL,
 			       ties = 'efron',
 			       singular.ok = TRUE,
@@ -91,6 +92,7 @@ ds.coxphSLMAassign <- function(formula = NULL,
 			       x = FALSE,
 			       y = TRUE,
 			       control = NULL,
+			       use.rms = FALSE,
 			       datasources = NULL,
                                objectname = NULL)
 {
@@ -133,6 +135,15 @@ ds.coxphSLMAassign <- function(formula = NULL,
    ####################################################################
    formula <- Reduce(paste, deparse(formula))
    formula <- gsub("survival::Surv(", "sssss", formula, fixed = TRUE)
+   formula <- gsub("rms::rcs(", "ggggg", formula, fixed = TRUE)
+   formula <- gsub("rms::asis(", "aaaaa", formula, fixed = TRUE)
+   formula <- gsub("rms::matrx(", "mmmmm", formula, fixed = TRUE)
+   formula <- gsub("rms::pol(", "ooooo", formula, fixed = TRUE)
+   formula <- gsub("rms::lsp(", "hhhhh", formula, fixed = TRUE)
+   formula <- gsub("rms::catg(", "ccccc", formula, fixed = TRUE)
+   formula <- gsub("rms::scored(", "ddddd", formula, fixed = TRUE)
+   formula <- gsub("rms::strat(", "nnnnn", formula, fixed = TRUE)
+   formula <- gsub("rms::gTrans(", "ttttt", formula, fixed = TRUE)
    formula <- gsub("|", "xxx", formula, fixed = TRUE)
    formula <- gsub("(", "yyy", formula, fixed = TRUE)
    formula <- gsub(")", "zzz", formula, fixed = TRUE)
@@ -179,7 +190,7 @@ ds.coxphSLMAassign <- function(formula = NULL,
    }	   
 	
 
-   calltext <- call("coxphSLMAassignDS", formula=formula, dataName, weights, init, ties, singular.ok, model, x, y, control)
+   calltext <- call("coxphSLMAassignDS", formula=formula, dataName, .weights, init, ties, singular.ok, model, x, y, control, use.rms)
    
    # call assign function
    output <- DSI::datashield.assign(conns = datasources, 

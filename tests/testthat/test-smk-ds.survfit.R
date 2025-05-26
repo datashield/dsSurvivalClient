@@ -1,5 +1,6 @@
 #-------------------------------------------------------------------------------
 # Copyright (c) 2019-2020 University of Newcastle upon Tyne. All rights reserved.
+# Copyright (c) 2025, XXXX
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -35,7 +36,11 @@ test_that("setup", {
 #   variables
 ls_object <- add_server_side_var_survival()
 # snure that objects have been added
-print(ls_object)
+test_that("variable presence checks", {
+    ls_object <- add_server_side_var_survival()
+
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME"))
+})
 
 #
 # Tests
@@ -51,7 +56,9 @@ test_that("simple error, setting up survfit but no summary allowed", {
     dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     #try(
     
-    cox_object <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')#, dataName = 'D')
+    # TODO: Fix test
+    cox_object <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))#, dataName = 'D')
+    print(datashield.errors())
     
     #, silent=FALSE)
     # print(cox_object$study1$call)

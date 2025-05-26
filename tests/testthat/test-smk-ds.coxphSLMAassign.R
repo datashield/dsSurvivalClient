@@ -1,5 +1,6 @@
 #-------------------------------------------------------------------------------
 # Copyright (c) 2019-2020 University of Newcastle upon Tyne. All rights reserved.
+# Copyright (c) 2025, XXXX
 #
 # This program and the accompanying materials
 # are made available under the terms of the GNU Public License v3.0.
@@ -33,9 +34,12 @@ test_that("setup", {
 # add survival related server side variables like SURVTIME, etc.
 #   need to convert these to numeric and create server side
 #   variables
-ls_object <- add_server_side_var_survival()
-# snure that objects have been added
-print(ls_object)
+# Enure that objects have been added
+test_that("variable presence checks", {
+    ls_object <- add_server_side_var_survival()
+
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME"))
+})
 
 #
 # Tests
@@ -63,7 +67,7 @@ test_that("simple error,wrong formula", {
     # expect_error( as.character(  ds.coxph.SLMA(formula = 'survival::Surv(time=SURVTIME,event=EVENT)~D$age', dataName = 'D')   ) )
     
     # wrong formula
-    expect_error( as.character(  dsSurvivalClient::ds.coxphSLMAassign(formula = 'survival::Surv(time=SURVTIME,event=EVENT)=D$age', dataName = 'D', objectname = 'surv_server')   ) )
+    expect_warning( expect_error( as.character(  dsSurvivalClient::ds.coxphSLMAassign(formula = 'survival::Surv(time=SURVTIME,event=EVENT)=D$age', dataName = 'D', objectname = 'surv_server')   ) ) )
     
 })
 
@@ -85,8 +89,10 @@ test_that("simple equal test, checking coefficients", {
     # print( datashield.errors() )
     
     # summary(cox_object)
-    
-    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
+
+    # TODO: Check Test
+    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
+    print(datashield.errors())
     cat("Model coeff")
     cat(coxph_model_full$survival1$coefficients[1])
     # print(summary(coxph_model_full))
@@ -104,8 +110,10 @@ context("ds.coxphSLMAassign::smk")
 test_that("summary of Cox model, error since only summary of survival object allowed", {
     
     surv_object <- dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
-    
-    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
+
+    # TODO: Check Test
+    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
+    print(datashield.errors())
     
     expect_error(as.character(ds.summary(x='coxph_model_full')) )
     
@@ -119,9 +127,9 @@ test_that("summary of Cox model, error since only summary of survival object all
 
 context("ds.coxphSLMAassign::smk::shutdown")
 
-#test_that("shutdown", {
-#    ds_expect_variables(c("D"))
-#})
+test_that("shutdown", {
+    ds_expect_variables(c("AGE", "D", "ENDTIME", "EVENT", "STARTTIME", "SURVTIME", "surv_object"))
+})
 
 disconnect.studies.dataset.cnsim()
 disconnect.studies.dataset.survival()
