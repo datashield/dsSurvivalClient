@@ -89,9 +89,7 @@ test_that("simple equal test, checking coefficients", {
     
     # summary(cox_object)
     
-    # TODO: fix error
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
+    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
     cat("Model coeff")
     cat(coxph_model_full$survival1$coefficients[1])
     # print(summary(coxph_model_full))
@@ -131,7 +129,7 @@ test_that("simple test, checking coefficients of diagnostics", {
 context("ds.cox.zphSLMA::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D", "AGE", "cox_object_serverside", "ENDTIME", "EVENT", "STARTTIME", "surv_object", "SURVTIME"))
+    ds_expect_variables(c("D", "AGE", "cox_object_serverside", "ENDTIME", "EVENT", "STARTTIME", "surv_object", "SURVTIME", "weights_obj"))
 })
 
 disconnect.studies.dataset.cnsim()

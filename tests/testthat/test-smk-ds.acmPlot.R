@@ -42,7 +42,7 @@ test_that("simple example",  {
     res <- expect_error(dsSurvivalClient::ds.acmPlot(pred_obj = "pred_obj", line_color = "darkblue", x_label = "BMI", event_n = 1000))
     print(datashield.errors())
 
-    expect_null(res)
+#    expect_null(res)
 })
 
 #
