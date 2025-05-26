@@ -7,7 +7,7 @@
 ds.finegray(
   formula = NULL,
   data = NULL,
-  weights = NULL,
+  .weights = NULL,
   na.action = "na.pass",
   etype = NULL,
   prefix = "fg",
@@ -23,7 +23,7 @@ ds.finegray(
 
 \item{data}{character string specifying the name of the data frame that contains the variables in the model}
 
-\item{weights}{optional character string specifying a variable providing weights for the observations}
+\item{.weights}{optional character string specifying a variable providing weights for the observations}
 
 \item{na.action}{character string specifying how to handle missing values; default is "na.pass"}
 
