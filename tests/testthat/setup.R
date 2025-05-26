@@ -14,8 +14,8 @@
 context("setup - start")
 
 library(lme4)
-library(e1071)
-library(DescTools)
+#library(e1071)
+#library(DescTools)
 
 library(DSOpal)
 library(DSLite)
