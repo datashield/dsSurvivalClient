@@ -29,10 +29,11 @@ test_that("setup", {
 
 context("ds.coxph::smk simple example")
 test_that("simple example",  {
+    ds.completeCases(x1 = "D", newobj = "CC_D")
 
     # TODO: Test need check
-    res <- expect_error(dsSurvivalClient::ds.coxph(df = "D", list("noise.56"), "starttime", "cens"))
-    print(datashield.errors())
+    res <- expect_error(dsSurvivalClient::ds.coxph(df = "CC_D", list("noise.56"), "starttime", "cens"), "error")
+    print(res)
 })
 
 #
@@ -42,7 +43,7 @@ test_that("simple example",  {
 context("ds.coxph::smk::shutdown")
 
 test_that("shutdown", {
-    ds_expect_variables(c("D"))
+    ds_expect_variables(c("D", "CC_D"))
 })
 
 # disconnect.studies.dataset.d()
