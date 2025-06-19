@@ -13,7 +13,7 @@
 #' If the \code{datasources} argument is not specified
 #' the default set of connections will be used: see \code{\link{datashield.connections_default}}.
 #' @param dataName character string of name of data frame
-#' @param .weights vector of case weights
+#' @param weights_obj vector of case weights
 #' @param init vector of initial values of the iteration.
 #' @param ties character string specifying the method for tie handling. The Efron approximation is
 #'	used as the default. Other options are 'breslow' and 'exact'.
@@ -84,7 +84,7 @@
 #' @export
 ds.coxphSLMAassign <- function(formula = NULL,
 			       dataName = NULL,
-			       .weights = NULL,
+			       weights_obj = NULL,
 			       init = NULL,
 			       ties = 'efron',
 			       singular.ok = TRUE,
@@ -190,7 +190,7 @@ ds.coxphSLMAassign <- function(formula = NULL,
    }	   
 	
 
-   calltext <- call("coxphSLMAassignDS", formula=formula, dataName, .weights, init, ties, singular.ok, model, x, y, control, use.rms)
+   calltext <- call("coxphSLMAassignDS", formula=formula, dataName, weights_obj, init, ties, singular.ok, model, x, y, control, use.rms)
    
    # call assign function
    output <- DSI::datashield.assign(conns = datasources, 

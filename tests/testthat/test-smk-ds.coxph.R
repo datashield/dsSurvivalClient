@@ -32,7 +32,7 @@ test_that("simple example",  {
     ds.completeCases(x1 = "D", newobj = "CC_D")
 
     # TODO: Test need check
-    res <- expect_error(dsSurvivalClient::ds.coxph(df = "CC_D", list("noise.56"), "starttime", "cens"), "error")
+    res <- expect_error(dsSurvivalClient::ds.coxph(df = "CC_D", list("noise.56"), "starttime", "cens"), "'data' must be of a vector type, was 'NULL'")
     print(res)
 })
 

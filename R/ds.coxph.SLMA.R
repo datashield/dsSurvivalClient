@@ -10,7 +10,7 @@
 #' specifying the formula that you want to pass to the server-side.
 #' For more information see \strong{Details}. 
 #' @param dataName character string of name of data frame
-#' @param .weights vector of case weights
+#' @param weights_obj vector of case weights
 #' @param init vector of initial values of the iteration.
 #' @param ties character string specifying the method for tie handling. The Efron approximation is
 #'	used as the default. Other options are 'breslow' and 'exact'.
@@ -82,7 +82,7 @@
 #' @export
 ds.coxph.SLMA <- function(formula = NULL,
 			  dataName = NULL,
-			  .weights = NULL,
+			  weights_obj = NULL,
 			  init = NULL,
 			  ties = 'efron',
 			  singular.ok = TRUE,
@@ -162,8 +162,8 @@ ds.coxph.SLMA <- function(formula = NULL,
   	 #	and a formula needs a ~ something
   	 #	so introduce dummy ~ something and remove
   	 #	it on server side   
-  	 control <- paste0(control, "~bbbb")  
-	   
+     control <- paste0(control, "~bbbb")
+
      control <- Reduce(paste, deparse(control))
      control <- gsub("survival::coxph.control(", "aaaaa", control, fixed =  TRUE)
      control <- gsub("|", "xxx", control, fixed = TRUE)
@@ -171,13 +171,13 @@ ds.coxph.SLMA <- function(formula = NULL,
      control <- gsub(")", "zzz", control, fixed = TRUE)
      control <- gsub("/", "ppp", control, fixed = TRUE)
      control <- gsub(":", "qqq", control, fixed = TRUE)
-	   control <- gsub(",", "rrr", control, fixed = TRUE)
+     control <- gsub(",", "rrr", control, fixed = TRUE)
      control <- gsub(" ", "",    control, fixed = TRUE)
      control <- gsub("=", "lll", control, fixed = TRUE)
-	   control <- stats::as.formula(control)   
+     control <- stats::as.formula(control)
    }	   
 	
-   calltext <- call("coxphSLMADS", formula=formula, dataName, .weights, init, ties, 
+   calltext <- call("coxphSLMADS", formula=formula, dataName, weights_obj, init, ties,
                     singular.ok, model, x, y, control)
    
    # call aggregate function
