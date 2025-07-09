@@ -54,9 +54,8 @@ test_that("simple error,wrong formula", {
     
     dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     #try(
-    # TODO: Fix Test
-    cox_object <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))#, dataName = 'D')
-    print(datashield.errors())
+
+    cox_object <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')#, dataName = 'D')
 
     #, silent=FALSE)
     # print(cox_object$study1$call)
@@ -93,9 +92,7 @@ test_that("simple equal test, checking coefficients", {
     
     # summary(cox_object)
     
-    # TODO: Fix Test
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
+    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
     cat("Model coeff")
     cat(coxph_model_full$survival1$coefficients[1])
     # print(summary(coxph_model_full))
@@ -131,9 +128,7 @@ test_that("simple summary of survival object, checking message non-existent obje
     
     surv_object <- dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     
-    # TODO: Fix Test
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
+    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
     
     # print(ds.summary(x = 'hello'))
     # expect_match(as.character(ds.summary(x='surv_object')), 'not defined', ignore.case = TRUE)
@@ -148,13 +143,10 @@ test_that("summary of Cox model, error since only summary of survival object all
     
     surv_object <- dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object', type='counting')
     
-    # TODO: Fix Test
-    coxph_model_full <- expect_error(dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE'))
-    print(datashield.errors())
+    coxph_model_full <- dsSurvivalClient::ds.coxph.SLMA(formula = 'surv_object~AGE')
     
     expect_error(as.character(ds.summary(x='coxph_model_full')) )
-    
-    
+
 })
 
 

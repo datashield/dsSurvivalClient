@@ -2,10 +2,11 @@
 % Please edit documentation in R/ds.acmPlot.R
 \name{ds.acmPlot}
 \alias{ds.acmPlot}
-\title{Client-side function to generate ACM plots in DataSHIELD}
+\title{Client-side function to generate hazard ratio plots in DataSHIELD}
 \usage{
 ds.acmPlot(
   pred_obj = NULL,
+  outcome_name = "ACM",
   line_color = "blue",
   line_size = 2,
   ref_line_color = "brown",
@@ -20,6 +21,8 @@ ds.acmPlot(
 \arguments{
 \item{pred_obj}{character string specifying the name of prediction object on the server-side
 created using ds.Predict()}
+
+\item{outcome_name}{character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")}
 
 \item{line_color}{color for the main line (default: "blue")}
 
@@ -43,7 +46,7 @@ created using ds.Predict()}
 a list of ggplot objects from each study
 }
 \description{
-This function creates a ggplot visualization for ACM (All-Cause Mortality) analysis
+This function creates a ggplot visualization for hazard ratio analysis
 by getting the prediction data from the server-side acmPlotDS function.
 }
 \details{
@@ -55,9 +58,17 @@ line sizes, axis labels, and more.
 \dontrun{
   # After setting up DataSHIELD connections and creating prediction object
   ds.acmPlot(pred_obj = "pred_obj",
+             outcome_name = "ACM",
              line_color = "darkblue",
              x_label = "BMI",
              event_n = 1000)
+  
+  # For CVD analysis
+  ds.acmPlot(pred_obj = "pred_obj",
+             outcome_name = "CVD",
+             line_color = "darkblue",
+             x_label = "BMI",
+             event_n = 800)
 }
 }
 \author{
