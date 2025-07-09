@@ -7,7 +7,7 @@
 ds.coxph.SLMA(
   formula = NULL,
   dataName = NULL,
-  .weights = NULL,
+  weights_obj = NULL,
   init = NULL,
   ties = "efron",
   singular.ok = TRUE,
@@ -26,7 +26,7 @@ For more information see \strong{Details}.}
 
 \item{dataName}{character string of name of data frame}
 
-\item{.weights}{vector of case weights}
+\item{weights_obj}{vector of case weights}
 
 \item{init}{vector of initial values of the iteration.}
 
