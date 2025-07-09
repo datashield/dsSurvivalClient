@@ -8,6 +8,8 @@ ds.plotsurvfit(
   formula = NULL,
   dataName = NULL,
   fun = NULL,
+  type = "both",
+  method_aggregation = "smoothed-weighted",
   datasources = NULL,
   xlab = "",
   ylab = "",
@@ -22,6 +24,10 @@ For more information see \strong{Details}.}
 \item{dataName}{character string of name of data frame}
 
 \item{fun}{optional parameter to have an argument. For example, you can pass 'cloglog' for a log-log survival plot.}
+
+\item{type}{an optional character string that represents the type of analysis to carry out. This can be set as 'combined', 'split', or 'both' (default).}
+
+\item{method_aggregation}{an optional character string that represents the method to combine the separate servers into one plot. Either 'smoothed-weighted' (default) or 'smoothed-counts' (see Details)}
 
 \item{datasources}{a list of \code{\link{DSConnection-class}} objects obtained after login. 
 If the \code{datasources} argument is not specified
@@ -38,7 +44,9 @@ privacy preserving survival curve from the server side environment.
 Performs plotting of privacy preserving survival curves.
 }
 \details{
-This is a server-side function that plots privacy preserving survival curves in DataSHIELD.
+This is a client-side function that plots privacy preserving survival curves in DataSHIELD.
+
+The survival function of multiple servers are aggregated using one of two methods (method_aggregation). The smoothed survival function is weighted by the smoothed counts of persons at risk ('smoothed-weighted') or the survival function is calculated using the smoothed counts of persons at risk and events ('smoothed-counts').
 
 Server function called: \code{plotsurvfitDS}.
 }
@@ -97,5 +105,5 @@ Server function called: \code{plotsurvfitDS}.
 
 }
 \author{
-Soumya Banerjee, Demetris Avraam, Paul Burton, Xavier Escriba-Montagut, Juan Gonzalez and Tom RP Bishop (2022).
+Soumya Banerjee, Demetris Avraam, Paul Burton, Xavier Escriba-Montagut, Juan Gonzalez and Tom RP Bishop (2022), updated by Nadja Lendle (2025).
 }
