@@ -39,11 +39,9 @@ test_that("simple example",  {
 
     dsSurvivalClient::ds.Surv(time='STARTTIME', time2='ENDTIME', event = 'EVENT', objectname='surv_object')
 
-    # Fix test errors
-    res <- expect_error(ds.finegray(formula = "Surv(endtime, cens) ~ age.60 + female", data = "D2.1", etype = 1, newobj = "fg_data"))
-    print(datashield.errors())
+    res <- ds.finegray(formula = "Surv(endtime, cens) ~ age.60 + female", data = "D2.1", etype = 1, newobj = "fg_data")
 
-    # expect_length(res, 0)
+    expect_length(res, 0)
 })
 
 #
@@ -53,8 +51,7 @@ test_that("simple example",  {
 context("ds.finegray::smk::shutdown")
 
 test_that("shutdown", {
-#    ds_expect_variables(c("D", "D2.1", "D2.2", "D2.3", "D2.4", "D2.5", "imputed_mids", "EVENT", "SURVTIME", "STARTTIME", "ENDTIME", "surv_object", "fg_data"))
-    ds_expect_variables(c("D", "D2.1", "D2.2", "D2.3", "D2.4", "D2.5", "imputed_mids", "EVENT", "SURVTIME", "STARTTIME", "ENDTIME", "surv_object"))
+    ds_expect_variables(c("D", "D2.1", "D2.2", "D2.3", "D2.4", "D2.5", "imputed_mids", "EVENT", "SURVTIME", "STARTTIME", "ENDTIME", "surv_object", "fg_data"))
 })
 
 # disconnect.studies.dataset.d()

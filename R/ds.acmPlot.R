@@ -1,5 +1,5 @@
-#' @title Client-side function to generate ACM plots in DataSHIELD
-#' @description This function creates a ggplot visualization for ACM (All-Cause Mortality) analysis
+#' @title Client-side function to generate hazard ratio plots in DataSHIELD
+#' @description This function creates a ggplot visualization for hazard ratio analysis
 #' by getting the prediction data from the server-side acmPlotDS function.
 #'
 #' @details This function takes a prediction object created by ds.Predict and generates
@@ -8,6 +8,7 @@
 #'
 #' @param pred_obj character string specifying the name of prediction object on the server-side
 #' created using ds.Predict()
+#' @param outcome_name character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")
 #' @param line_color color for the main line (default: "blue")
 #' @param line_size size of the main line (default: 2)
 #' @param ref_line_color color for the reference line (default: "brown")
@@ -23,12 +24,21 @@
 #' \dontrun{
 #'   # After setting up DataSHIELD connections and creating prediction object
 #'   ds.acmPlot(pred_obj = "pred_obj",
+#'              outcome_name = "ACM",
 #'              line_color = "darkblue",
 #'              x_label = "BMI",
 #'              event_n = 1000)
+#'   
+#'   # For CVD analysis
+#'   ds.acmPlot(pred_obj = "pred_obj",
+#'              outcome_name = "CVD",
+#'              line_color = "darkblue",
+#'              x_label = "BMI",
+#'              event_n = 800)
 #' }
 #' @export
 ds.acmPlot <- function(pred_obj = NULL,
+                      outcome_name = "ACM",
                       line_color = "blue",
                       line_size = 2,
                       ref_line_color = "brown",
@@ -53,9 +63,9 @@ ds.acmPlot <- function(pred_obj = NULL,
   plots <- lapply(pred_data, function(study_data) {
     # Create title if event number is provided
     if (!is.null(event_n)) {
-      plot_title <- paste0("ACM (n = ", event_n, ")")
+      plot_title <- paste0(outcome_name, " (n = ", event_n, ")")
     } else {
-      plot_title <- "ACM"
+      plot_title <- outcome_name
     }
 
     if (is.null(x_breaks)) {

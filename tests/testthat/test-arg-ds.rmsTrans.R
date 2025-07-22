@@ -39,6 +39,16 @@ test_that("x is not NULL, objectname is NULL",  {
     expect_error(dsSurvivalClient::ds.rmsTrans(x = "", objectname = NULL), "Please provide a valid objectname to store the transformed variable")
 })
 
+context("ds.rmsTrans::arg invalid transformation")
+test_that("invalid transformation",  {
+    x_arg              <- "D$age.60"
+    transformation_arg <- "unknown"
+    parm_arg           <- NULL
+    objectname_arg     <- "rms_obj"
+
+    expect_error(dsSurvivalClient::ds.rmsTrans(x = x_arg, transformation = transformation_arg, parm = parm_arg, objectname = objectname_arg))
+})
+
 #
 # Done
 #
