@@ -1,12 +1,6 @@
 #' @title Client-side function to generate hazard ratio plots in DataSHIELD
-#' @description This function creates a ggplot visualization for hazard ratio analysis
-#' by getting the prediction data from the server-side acmPlotDS function.
-#'
-#' @details This function takes a prediction object created by ds.Predict and generates
-#' a customizable ggplot visualization. The function allows customization of colors,
-#' line sizes, axis labels, and more.
-#'
-#'
+#' @description Builds a ggplot2 hazard ratio curve for each connected study, using prediction data fetched from the DataSHIELD server. Plot appearance (colors, line sizes, axis labels) can be customized.
+#' @details This function sends a request to the server to extract prediction data from an object previously created with ds.Predict, then builds the plot locally with ggplot2 (using rms for underlying plot support). Server function called: `acmPlotDS`. If x_breaks is not supplied, five evenly spaced breaks are computed from the range of the first column of each study's returned prediction data.
 #' @param pred_obj character string specifying the name of prediction object on the server-side
 #' created using ds.Predict()
 #' @param outcome_name character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")
@@ -14,12 +8,12 @@
 #' @param line_size size of the main line (default: 2)
 #' @param ref_line_color color for the reference line (default: "brown")
 #' @param ref_line_size size of the reference line (default: 1.5)
-#' @param x_breaks numeric vector for x-axis breaks (optional)
+#' @param x_breaks Optional numeric vector of x-axis tick positions; if NULL, five evenly spaced breaks are computed from each study's data range.
 #' @param x_label label for x-axis (default: "Primary exposure")
 #' @param y_label label for y-axis (default: "Hazard ratio")
-#' @param event_n number of events (optional)
+#' @param event_n Optional numeric value giving the number of events; if supplied, it is appended to the plot title as "(n = event_n)".
 #' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login
-#' @return a list of ggplot objects from each study
+#' @return Returns a list of ggplot objects, one per study/connection in datasources, each built from the prediction summary data returned by the server (no individual-level data leaves the server).
 #' @author Xavier Escribà Montagut, 2025
 #' @examples
 #' \dontrun{
