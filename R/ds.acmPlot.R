@@ -1,6 +1,13 @@
 #' @title Client-side function to generate hazard ratio plots in DataSHIELD
-#' @description Builds a ggplot2 hazard ratio curve for each connected study, using prediction data fetched from the DataSHIELD server. Plot appearance (colors, line sizes, axis labels) can be customized.
-#' @details This function sends a request to the server to extract prediction data from an object previously created with ds.Predict, then builds the plot locally with ggplot2 (using rms for underlying plot support). Server function called: `acmPlotDS`. If x_breaks is not supplied, five evenly spaced breaks are computed from the range of the first column of each study's returned prediction data.
+#' @description This function creates a ggplot visualization for hazard ratio analysis
+#' by getting the prediction data from the server-side acmPlotDS function.
+#'
+#' @details This function takes a prediction object created by ds.Predict and generates
+#' a customizable ggplot visualization. The function allows customization of colors,
+#' line sizes, axis labels, and more.
+#'
+#'
+#'
 #' @param pred_obj character string specifying the name of prediction object on the server-side
 #' created using ds.Predict()
 #' @param outcome_name character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")
