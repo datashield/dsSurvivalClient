@@ -7,6 +7,7 @@
 #' line sizes, axis labels, and more.
 #'
 #'
+#'
 #' @param pred_obj character string specifying the name of prediction object on the server-side
 #' created using ds.Predict()
 #' @param outcome_name character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")
