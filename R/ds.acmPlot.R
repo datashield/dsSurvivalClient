@@ -1,27 +1,19 @@
 #' @title Client-side function to generate hazard ratio plots in DataSHIELD
-#' @description This function creates a ggplot visualization for hazard ratio analysis
-#' by getting the prediction data from the server-side acmPlotDS function.
-#'
-#' @details This function takes a prediction object created by ds.Predict and generates
-#' a customizable ggplot visualization. The function allows customization of colors,
-#' line sizes, axis labels, and more.
-#'
-#'
-#'
-#'
-#' @param pred_obj character string specifying the name of prediction object on the server-side
-#' created using ds.Predict()
-#' @param outcome_name character string specifying the outcome name (e.g., "ACM", "CVD") (default: "ACM")
-#' @param line_color color for the main line (default: "blue")
-#' @param line_size size of the main line (default: 2)
-#' @param ref_line_color color for the reference line (default: "brown")
-#' @param ref_line_size size of the reference line (default: 1.5)
-#' @param x_breaks numeric vector for x-axis breaks (optional)
-#' @param x_label label for x-axis (default: "Primary exposure")
-#' @param y_label label for y-axis (default: "Hazard ratio")
-#' @param event_n number of events (optional)
-#' @param datasources a list of \code{\link{DSConnection-class}} objects obtained after login
-#' @return a list of ggplot objects from each study
+#' @description Builds a customizable ggplot2 hazard ratio curve for each connected study, using prediction data retrieved from the server-side acmPlotDS function.
+#' @details This function sends pred_obj (the name of an object previously created with ds.Predict on the server) to the server via DSI::datashield.aggregate, which calls the server-side function acmPlotDS to retrieve prediction data for each study. It then builds one ggplot2 plot per study locally, using ggplot2::geom_line, ggplot2::geom_hline and related layers, and requires the rms package to be installed (loaded via require(rms)) for the plotting to succeed. If x_breaks is not supplied, it is computed per study as 5 equally spaced values spanning the range of the first column of the returned prediction data.
+#' Server function called: `acmPlotDS`.
+#' @param pred_obj Character string giving the name of a prediction object already created on the server with ds.Predict(); this is a server-side object name, not a local R object. Required, no default.
+#' @param outcome_name Character string used as (the start of) the plot title, e.g. "ACM" or "CVD" (default: "ACM").
+#' @param line_color Color (as accepted by ggplot2) used for the main hazard ratio line (default: "blue").
+#' @param line_size Numeric line width for the main hazard ratio line, passed to ggplot2::geom_line (default: 2).
+#' @param ref_line_color Color for the horizontal reference line at hazard ratio = 1 (default: "brown").
+#' @param ref_line_size Numeric line width for the horizontal reference line, passed to ggplot2::geom_hline (default: 1.5).
+#' @param x_breaks Optional numeric vector of x-axis tick positions; if NULL, 5 equally spaced breaks are computed per study from the range of the prediction data's first column.
+#' @param x_label Character string used as the x-axis label (default: "Primary exposure").
+#' @param y_label Character string used as the y-axis label (default: "Hazard ratio").
+#' @param event_n Optional number of events; if supplied, it is appended to the plot title as "outcome_name (n = event_n)".
+#' @param datasources A list of DSConnection-class objects as returned by DSI::datashield.login; if NULL, the function uses DSI::datashield.connections_find() to find existing connections.
+#' @return Returns a plain R list of ggplot objects, one per study/data source, in the same order as the connections in datasources; no data values are returned, only the plot objects built from the already-aggregated prediction summaries, so no additional disclosure control is applied in this function.
 #' @author Xavier Escribà Montagut, 2025
 #' @examples
 #' \dontrun{
